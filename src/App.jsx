@@ -3,8 +3,7 @@ import "./App.css";
 import Header from "./components/Header";
 import ProductLists from "./components/ProductList";
 import ProductDetail from "./components/productDetail";
-import Cart from "./components/cart";
-
+import Cart from "./components/Cart"
 
 function App() {
   return (
