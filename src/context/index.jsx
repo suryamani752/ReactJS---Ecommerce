@@ -1,4 +1,3 @@
-// src/context/index.jsx
 import { createContext, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
