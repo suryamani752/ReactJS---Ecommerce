@@ -8,7 +8,7 @@ import Cart from "./components/Cart"
 function App() {
   return (
     <>
-      <Header /> {/* Renders on all pages */}
+      <Header /> 
       <main className="py-8">
         <Routes>
           <Route path="/" element={<ProductLists />} />
