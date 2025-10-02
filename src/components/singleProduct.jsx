@@ -1,14 +1,24 @@
 import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { ShoppingCartContext } from "../context";
+import { useAuth } from "../context/AuthContext";
 
 const SingleProduct = ({ singleProduct }) => {
   const { cartItems, handleAddToCart } = useContext(ShoppingCartContext);
   const navigate = useNavigate();
+  const { currentUser } = useAuth();
 
   const isItemInCart =
     singleProduct &&
     cartItems.findIndex((item) => item.id === singleProduct.id) > -1;
+
+  const handleAddToCartClick = () => {
+    if (currentUser) {
+      handleAddToCart(singleProduct);
+    } else {
+      navigate("/login");
+    }
+  };
 
   return (
     <div className="group relative flex flex-col overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm transition-all duration-300 hover:shadow-lg">
@@ -41,9 +51,7 @@ const SingleProduct = ({ singleProduct }) => {
         </div>
         <button
           onClick={
-            isItemInCart
-              ? () => navigate("/cart")
-              : () => handleAddToCart(singleProduct)
+            isItemInCart ? () => navigate("/cart") : handleAddToCartClick
           }
           className={`mt-2 w-full rounded-md px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm cursor-pointer ${
             isItemInCart

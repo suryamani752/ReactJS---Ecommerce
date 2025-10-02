@@ -4,6 +4,7 @@ import { ShoppingCartContext } from "../context";
 import Loader from "./Loader";
 import ProductReview from "./ProductReview";
 import SingleProduct from "./singleProduct";
+import { useAuth } from "../context/AuthContext";
 
 const StarRating = ({ rating }) => {
   const stars = [];
@@ -32,6 +33,7 @@ const ProductDetail = () => {
     handleAddToCart,
     listOfProducts,
   } = useContext(ShoppingCartContext);
+  const { currentUser } = useAuth();
 
   const [mainImage, setMainImage] = useState("");
   const [similarProducts, setSimilarProducts] = useState([]);
@@ -72,7 +74,7 @@ const ProductDetail = () => {
             item.category === productDetail.category &&
             item.id !== productDetail.id
         )
-        .slice(0, 4); 
+        .slice(0, 4);
       setSimilarProducts(filtered);
     }
   }, [productDetail, listOfProducts]);
@@ -94,6 +96,14 @@ const ProductDetail = () => {
 
   const isItemInCart =
     cartItems.findIndex((item) => item.id === productDetail.id) > -1;
+
+  const handleAddToCartClick = () => {
+    if (currentUser) {
+      handleAddToCart(productDetail);
+    } else {
+      navigate("/login");
+    }
+  };
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -167,9 +177,7 @@ const ProductDetail = () => {
           <div className="mt-10">
             <button
               onClick={
-                isItemInCart
-                  ? () => navigate("/cart")
-                  : () => handleAddToCart(productDetail)
+                isItemInCart ? () => navigate("/cart") : handleAddToCartClick
               }
               className={`flex w-full items-center justify-center cursor-pointer rounded-md border border-transparent px-8 py-3 text-base font-medium text-white ${
                 isItemInCart
